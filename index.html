@@ -5,39 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casamento de Ronaldo & Vitória</title>
     
-    <!-- Tailwind CSS (Estilização Moderna) -->
+    <!-- Meta Tags para SEO e Compartilhamento -->
+    <meta property="og:title" content="Casamento de Ronaldo & Vitória">
+    <meta property="og:description" content="Temos a alegria de convidar você para o nosso casamento.">
+    <meta property="og:image" content="https://lh3.googleusercontent.com/pw/AP1GczPtHo3JyrXxWKPUVJ-tEoHp8wY8Ub-L2VmknJV5snz_1rJA-HUJpdS1i9-AuqsbZxYxR1Cx7d295_ATR4rhmCR1BgVX8ke2DFQj9bZ0NptXk7O13evHuC9sqAVYe1vXACZF5H5KW_8sXcRnb9iHlwVYZg=w576-h288-s-no-gm?authuser=0">
+    
+    <!-- Tailwind CSS (Via CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-    
-    <!-- Ícones -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
 
-    <!-- Configurações Personalizadas do Tailwind -->
+    <!-- Configuração de Estilos Personalizados -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         'wedding-gold': '#D4AF37',
-                        'wedding-cream': '#FDFBF7',
-                        'wedding-text': '#4A4A4A',
-                        'wedding-green': '#5F6F52',
+                        'wedding-cream': '#F9F7F2',
+                        'wedding-text': '#2C3E50',
+                        'wedding-sage': '#8DA399',
                     },
                     fontFamily: {
                         'script': ['"Great Vibes"', 'cursive'],
-                        'serif': ['"Cormorant Garamond"', 'serif'],
-                        'sans': ['"Lato"', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'paper-texture': "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
-                        'gentle-pulse': 'pulse 3s infinite',
+                        'title': ['"Cinzel"', 'serif'],
+                        'body': ['"Montserrat"', 'sans-serif'],
+                        'elegant': ['"Pinyon Script"', 'cursive'],
                     }
                 }
             }
@@ -45,254 +41,348 @@
     </script>
 
     <style>
-        /* Estilos Globais e Animações Específicas */
+        /* Animações e Utilitários CSS Puros */
         body {
+            background-color: #F9F7F2;
             overflow-x: hidden;
-            background-color: #f0f0f0;
         }
 
-        .scroll-hidden::-webkit-scrollbar {
-            display: none;
+        /* Efeito de Reveal ao Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Efeito de Vidro Fosco */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        }
-
-        /* Animação do Envelope */
+        /* Overlay do Envelope */
         #envelope-overlay {
-            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #FDFBF7;
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease-in-out;
+            background-image: radial-gradient(#D4AF37 1px, transparent 1px);
+            background-size: 30px 30px;
         }
-        
-        .envelope-open #envelope-overlay {
+
+        .envelope-hidden {
             transform: translateY(-100%);
             opacity: 0;
             pointer-events: none;
         }
 
-        .content-reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease 0.5s;
+        /* Botão Selo de Cera */
+        .wax-seal {
+            width: 120px;
+            height: 120px;
+            background: #D4AF37;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 0 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: 4px solid #C5A028;
+            animation: pulse 2s infinite;
+            position: relative;
         }
 
-        .envelope-open .content-reveal {
-            opacity: 1;
-            transform: translateY(0);
+        .wax-seal::after {
+            content: "R & V";
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
-        /* Decorações Florais */
-        .floral-corner {
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* Estilização das Imagens com Moldura */
+        .photo-frame {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px; /* Canto suave */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .photo-frame::after {
+            content: '';
             position: absolute;
-            width: 150px;
-            opacity: 0.8;
-            z-index: 0;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.6);
             pointer-events: none;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Texto Dourado Elegante */
+        .text-gradient {
+            background: linear-gradient(45deg, #B8860B, #D4AF37, #F0E68C, #D4AF37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: shimmer 5s ease infinite;
         }
-        
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
-        .is-visible {
-            opacity: 1;
-            transform: translateY(0);
+
+        .separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            color: #D4AF37;
         }
+        .separator::before, .separator::after {
+            content: "";
+            height: 1px;
+            width: 50px;
+            background-color: #D4AF37;
+            margin: 0 15px;
+        }
+
     </style>
 </head>
 <body class="antialiased text-wedding-text">
 
-    <!-- CAMADA DO ENVELOPE (Abertura) -->
-    <div id="envelope-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-[#e8e4dc] shadow-2xl">
-        <div class="relative w-full max-w-md p-8 text-center">
-            <!-- Selo de Cera -->
-            <div onclick="openEnvelope()" class="cursor-pointer group relative inline-flex items-center justify-center">
-                <div class="absolute inset-0 bg-wedding-gold rounded-full opacity-20 group-hover:scale-150 transition-transform duration-700 animate-pulse"></div>
-                <div class="relative bg-[#C5A028] w-24 h-24 rounded-full flex items-center justify-center shadow-lg border-4 border-[#B08D22] transform group-hover:scale-105 transition-transform">
-                    <span class="font-script text-3xl text-white pt-2">R & V</span>
-                </div>
-            </div>
-            <p class="mt-6 font-serif text-xl text-wedding-text italic animate-bounce">Toque para abrir</p>
-            
-            <!-- Detalhe decorativo do envelope -->
-            <div class="absolute top-0 left-0 w-full h-full border-[20px] border-[#dcd8cf] border-t-[#cabb9e] border-l-[#d4cbb6] border-r-[#d4cbb6] border-b-[#e8e4dc] z-[-1] pointer-events-none box-border"></div>
+    <!-- 
+      ========================================
+      ANIMAÇÃO DE ABERTURA (ENVELOPE)
+      ========================================
+    -->
+    <div id="envelope-overlay">
+        <div class="text-center mb-8">
+            <h2 class="font-script text-4xl text-wedding-gold mb-2">Convite Especial</h2>
+            <p class="font-body text-gray-500 uppercase tracking-widest text-xs">Toque no selo para abrir</p>
         </div>
+        <button class="wax-seal" onclick="openInvitation()" aria-label="Abrir Convite"></button>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL (O Convite) -->
-    <main class="min-h-screen bg-wedding-cream bg-paper-texture flex justify-center pb-12 content-reveal">
+    <!-- 
+      ========================================
+      CONTEÚDO PRINCIPAL
+      ========================================
+    -->
+    <main id="main-content" class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative pb-12 opacity-0 transition-opacity duration-1000">
         
-        <div class="w-full max-w-lg shadow-2xl bg-white relative overflow-hidden">
+        <!-- Borda Decorativa -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-wedding-gold"></div>
+
+        <!-- 
+          PÁGINA 1: O ANÚNCIO
+        -->
+        <section class="px-6 pt-12 pb-8 text-center reveal active">
+            <p class="font-body uppercase tracking-[0.2em] text-xs text-gray-500 mb-4">Vamos nos Casar</p>
             
-            <!-- Imagem de Fundo Suave (Casal/Flores) -->
-            <div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
-                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Background Texture">
+            <h1 class="font-script text-6xl text-wedding-gold mb-2">Ronaldo</h1>
+            <span class="font-elegant text-3xl text-gray-400">&</span>
+            <h1 class="font-script text-6xl text-wedding-gold mb-8">Vitória</h1>
+
+            <!-- Foto 1 (Wide/Banner) -->
+            <div class="photo-frame mb-8">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczPtHo3JyrXxWKPUVJ-tEoHp8wY8Ub-L2VmknJV5snz_1rJA-HUJpdS1i9-AuqsbZxYxR1Cx7d295_ATR4rhmCR1BgVX8ke2DFQj9bZ0NptXk7O13evHuC9sqAVYe1vXACZF5H5KW_8sXcRnb9iHlwVYZg=w576-h288-s-no-gm?authuser=0" 
+                     alt="Ronaldo e Vitória" 
+                     class="w-full h-auto object-cover"
+                     loading="lazy">
             </div>
 
-            <!-- Header com Foto do Casal (Conceitual) -->
-            <header class="relative h-[80vh] flex flex-col items-center justify-end pb-20 text-center px-6">
-                <!-- Imagem do Casal -->
-                <div class="absolute inset-0 z-0">
-                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1470&auto=format&fit=crop" class="w-full h-full object-cover brightness-75" alt="Casal">
-                    <div class="absolute inset-0 bg-gradient-to-t from-wedding-cream via-transparent to-transparent"></div>
-                </div>
-
-                <div class="relative z-10 animate-fade-in-up">
-                    <p class="font-sans tracking-[0.2em] text-sm text-white uppercase mb-2 shadow-sm">Vamos nos casar</p>
-                    <h1 class="font-script text-6xl md:text-7xl text-white mb-2 leading-tight drop-shadow-lg">
-                        Ronaldo <br> <span class="text-4xl">&</span> <br> Vitória
-                    </h1>
-                    <div class="w-16 h-1 bg-white mx-auto mt-4 mb-4 rounded-full"></div>
-                </div>
-            </header>
-
-            <!-- Seção da Mensagem -->
-            <section class="px-8 py-12 text-center relative animate-on-scroll">
-                <!-- Ícone de Alianças -->
-                <div class="flex justify-center mb-6">
-                   <img src="https://img.icons8.com/ios/100/D4AF37/wedding-rings.png" class="w-12 h-12 opacity-80" alt="Alianças">
-                </div>
-                
-                <h2 class="font-serif text-3xl text-wedding-gold mb-6 italic">Com a benção de Deus</h2>
-                
-                <p class="font-serif text-xl text-gray-600 leading-relaxed italic">
-                    "Damos a honra de convidar Walter Kenned e Família para celebrar o amor que nos une. 
-                    Nossa história é escrita pelas mãos de Deus, e sua presença tornará este capítulo ainda mais especial."
+            <!-- Versículo Bíblico -->
+            <div class="border-t border-b border-gray-100 py-6 my-6 relative">
+                <span class="text-4xl text-wedding-gold absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-2">❝</span>
+                <p class="font-title text-sm italic text-gray-600 leading-relaxed px-4">
+                    "Encontrei aquele a quem a minha alma ama; agarrei-me a ele e não o deixarei ir."
                 </p>
-            </section>
+                <p class="font-body text-xs mt-3 font-semibold text-wedding-gold uppercase">Cânticos 3:4</p>
+            </div>
+        </section>
 
-            <!-- Seção dos Pais -->
-            <section class="px-6 py-10 bg-[#faf8f2] relative animate-on-scroll">
-                <!-- Decoração floral CSS (SVG inline) -->
-                <svg class="absolute top-0 right-0 w-24 h-24 text-wedding-gold opacity-10 transform rotate-90" viewBox="0 0 100 100" fill="currentColor"><path d="M50 0C50 27.6 27.6 50 0 50C27.6 50 50 72.4 50 100C50 72.4 72.4 50 100 50C72.4 50 50 27.6 50 0Z"/></svg>
+        <!-- Divisor Ornamental -->
+        <div class="separator"><span class="text-xl">❦</span></div>
 
-                <div class="text-center space-y-8">
-                    <div>
-                        <p class="font-sans text-xs uppercase tracking-widest text-gray-400 mb-2">Filhos de</p>
-                        <h3 class="font-serif text-2xl text-wedding-text font-semibold">Natividade Pereira de Araújo</h3>
-                        <h3 class="font-serif text-2xl text-wedding-text font-semibold">& Maria Barros de Araújo</h3>
-                    </div>
+        <!-- 
+          PÁGINA 2: A FAMÍLIA (PAIS)
+        -->
+        <section class="px-6 py-8 text-center reveal">
+            <!-- Foto 2 (Landscape Media) -->
+            <div class="photo-frame mb-8 mx-4 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczOun2C7zVGJG3IewR_UuI6nopWHV7lkqWyA1qSp6vHjFxoyocOmusMlYc3A6HLZmb31b4GccBg72BfewXONDLETs756lOqI-ygvHYy_4s7L2MEWTIkE6lSHx8hjm4jrd1LZhfE6_ZLkmYLtIUu8Becp5g=w547-h365-s-no-gm?authuser=0" 
+                     alt="Nossa Família" 
+                     class="w-full h-auto object-cover"
+                     loading="lazy">
+            </div>
 
-                    <div class="flex items-center justify-center my-2">
-                        <span class="text-wedding-gold text-2xl">&</span>
-                    </div>
-
-                    <div>
-                        <h3 class="font-serif text-2xl text-wedding-text font-semibold">Reilson Barbosa Santos</h3>
-                        <h3 class="font-serif text-2xl text-wedding-text font-semibold">& Vânia Nunes de Araújo Pereira</h3>
-                    </div>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="font-title text-sm uppercase tracking-widest text-wedding-gold mb-2">Os Noivos</h3>
+                    <p class="font-elegant text-2xl text-gray-800">Ronaldo Barros de Araújo</p>
+                    <p class="font-body text-xs text-gray-400 my-1">e</p>
+                    <p class="font-elegant text-2xl text-gray-800">Vitória Barbosa de Araújo</p>
                 </div>
-            </section>
 
-            <!-- Detalhes do Evento -->
-            <section class="relative py-16 px-6 text-center animate-on-scroll">
-                <!-- Background decorativo -->
-                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10 z-0"></div>
-                
-                <div class="relative z-10 glass-panel p-8 rounded-xl border border-wedding-gold/20">
-                    <h2 class="font-script text-5xl text-wedding-gold mb-6">Dezembro</h2>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <div>
+                        <h3 class="font-body text-[10px] uppercase tracking-widest text-gray-500 mb-2">Filhos de</h3>
+                        <p class="font-title text-sm font-semibold text-gray-700">Natividade Pereira de Araújo</p>
+                        <p class="font-title text-sm font-semibold text-gray-700">& Maria Barros de Araújo</p>
+                    </div>
                     
-                    <div class="space-y-4 font-serif text-lg text-gray-700">
-                        <p>A cerimônia acontecerá no mês de Dezembro.</p>
-                        
-                        <div class="w-full h-px bg-wedding-gold/30 my-4"></div>
-                        
-                        <p class="text-sm italic text-gray-500">
-                            O convite oficial com a data exata, horário e endereço da igreja será enviado em breve.
-                        </p>
-                        <p class="text-sm font-bold text-wedding-gold mt-2">
-                            Qualquer mudança na data será avisada com antecedência.
-                        </p>
+                    <div>
+                        <h3 class="font-body text-[10px] uppercase tracking-widest text-gray-500 mb-2">E</h3>
+                        <p class="font-title text-sm font-semibold text-gray-700">Reilson Barbosa Santos</p>
+                        <p class="font-title text-sm font-semibold text-gray-700">& Vânia Nunes de Araújo Pereira</p>
                     </div>
                 </div>
-            </section>
 
-            <!-- Rodapé / Confirmação -->
-            <footer class="bg-[#2c2c2c] text-white py-12 px-6 text-center relative">
-                <div class="mb-8">
-                    <h3 class="font-script text-4xl mb-2 text-wedding-gold">Confirme sua Presença</h3>
-                    <p class="font-sans text-sm text-gray-400 font-light">
-                        Sua presença é o nosso maior presente.
+                <div class="bg-wedding-cream p-6 rounded-lg mt-6 mx-2 border border-wedding-gold/20">
+                    <p class="font-body text-sm leading-relaxed text-gray-600">
+                        Com corações cheios de gratidão a Deus, temos a honra e a alegria de anunciar que nossos filhos unirão suas vidas no sagrado matrimônio.
                     </p>
                 </div>
+            </div>
+        </section>
 
-                <!-- Botão WhatsApp -->
-                <button onclick="confirmPresence()" class="group relative w-full max-w-xs mx-auto bg-green-600 hover:bg-green-700 text-white font-serif py-4 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                    <i data-lucide="message-circle" class="w-6 h-6"></i>
-                    <span>Confirmar pelo WhatsApp</span>
-                </button>
-                <p class="text-xs text-gray-500 mt-3 max-w-xs mx-auto">
-                    Ao clicar, escolha o contato do Noivo ou da Noiva na sua lista para enviar a mensagem automática.
-                </p>
+        <!-- Divisor Ornamental -->
+        <div class="separator"><span class="text-xl">❦</span></div>
 
-                <div class="mt-12 opacity-50">
-                    <p class="font-script text-2xl">R & V</p>
+        <!-- 
+          PÁGINA 3: O CONVITE OFICIAL
+        -->
+        <section class="px-6 py-8 text-center reveal">
+            <!-- Foto 3 (Portrait) -->
+            <div class="w-3/4 mx-auto photo-frame mb-8 shadow-xl">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczP3yGp90Lmm3g8LXt8oI43gCt2gCMzQluIjP-vBaQUh-_6UTbC0_JkHXqWnqgqcBHMskHmSspwJwoASzv0E4FNxifW4L-uyUc6QriyLV9sXSu91jdkfkmtTApaB4rOf2to_noOcePz7ujvECs-B0Mf7zw=w399-h501-s-no-gm?authuser=0" 
+                     alt="O Casal" 
+                     class="w-full h-auto object-cover"
+                     loading="lazy">
+            </div>
+
+            <h2 class="font-script text-4xl text-wedding-gold mb-4">Convite Solene</h2>
+            
+            <p class="font-body text-sm text-gray-600 mb-6 leading-relaxed">
+                Para celebrar o amor que Deus uniu, os noivos, juntamente com seus pais, têm a honra de convidar
+            </p>
+
+            <!-- Área do Nome do Convidado em Destaque -->
+            <div class="my-8 py-2 relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
                 </div>
+                <div class="relative flex justify-center">
+                    <span class="bg-white px-4 font-title text-lg font-bold text-wedding-text tracking-wide uppercase">
+                        Walter Kenned e Família
+                    </span>
+                </div>
+            </div>
+
+            <p class="font-body text-sm text-gray-600 leading-relaxed">
+                para testemunharem o início de nossa nova jornada. Sua presença tornará este dia ainda mais inesquecível.
+            </p>
+        </section>
+
+        <!-- Divisor Ornamental -->
+        <div class="separator"><span class="text-xl">❦</span></div>
+
+        <!-- 
+          PÁGINA 4: ACEITE E INFORMAÇÕES FINAIS
+        -->
+        <section class="px-6 py-8 pb-16 text-center reveal bg-wedding-cream/30">
+             <!-- Foto 4 (Portrait) -->
+             <div class="w-2/3 mx-auto photo-frame mb-8 rotate-1 hover:rotate-0 transition-transform duration-500">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczMBzyoMj0XWB-7TRXDVE3RGDxgV3NxJp8Tmedvc9BZ3LxpHRBfZGV5xFJfsYEtm-gnie3gmWT-a0WEL50qWmmZ8Z1CS-x_J623b3JvZEydnW5QoYyPG6DAfmSG3aVrDxFhykIrPyfq45NisfvGOfyvRKw=w399-h599-s-no-gm?authuser=0" 
+                     alt="Ronaldo e Vitória Sorrindo" 
+                     class="w-full h-auto object-cover"
+                     loading="lazy">
+            </div>
+
+            <h2 class="font-title text-xl text-gray-800 mb-2 uppercase tracking-widest">Aceitar Convite</h2>
+            <p class="font-body text-xs text-gray-500 mb-8 italic">Clique abaixo para nos enviar uma mensagem</p>
+
+            <!-- Botão WhatsApp -->
+            <a href="https://wa.me/?text=Queridos%20Noivos%2C%0A%0ARecebemos%20com%20grande%20alegria%20e%20honra%20o%20convite%20para%20testemunhar%20esta%20nova%20alian%C3%A7a%20firmada%20em%20Deus.%20Agradecemos%20a%20considera%C3%A7%C3%A3o%20e%20a%20oportunidade%20de%20nos%20alegrarmos%20convosco.%20J%C3%A1%20estamos%20ansiosos%20pelos%20detalhes%21" 
+               target="_blank"
+               class="inline-block bg-wedding-gold text-white font-title text-sm uppercase tracking-wider py-4 px-8 rounded shadow-lg hover:bg-[#B8860B] transition duration-300 transform hover:-translate-y-1 mb-10 items-center justify-center flex gap-2 mx-auto w-full max-w-xs">
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/>
+               </svg>
+               Enviar Mensagem
+            </a>
+
+            <!-- Caixa de Informação sobre o Manual -->
+            <div class="border border-wedding-gold/30 p-6 rounded-lg bg-white shadow-sm">
+                <h3 class="font-script text-3xl text-wedding-gold mb-3">Próximos Passos</h3>
+                <p class="font-body text-sm text-gray-600 leading-relaxed mb-4">
+                    Após o seu <strong>aceite</strong>, enviaremos em breve o <strong class="text-wedding-gold">Manual dos Convidados</strong>.
+                </p>
+                <p class="font-body text-xs text-gray-500 leading-relaxed">
+                    Nele conterão a lista de presentes, local, horário da cerimônia na igreja e outras regras importantes. A confirmação oficial de presença (RSVP) será solicitada apenas após o recebimento deste manual.
+                </p>
+            </div>
+            
+            <footer class="mt-12 text-center text-gray-400 text-[10px] uppercase tracking-widest">
+                <p>Com amor, Ronaldo & Vitória &copy; 2025</p>
             </footer>
-        </div>
+        </section>
+
     </main>
 
-    <!-- Script de Interação -->
     <script>
-        // Inicializa ícones
-        lucide.createIcons();
-
-        // Lógica do Envelope
-        function openEnvelope() {
-            document.body.classList.add('envelope-open');
-            // Permite scroll após abrir
-            document.body.style.overflowY = 'auto';
+        // Função para abrir o "Envelope"
+        function openInvitation() {
+            const envelope = document.getElementById('envelope-overlay');
+            const mainContent = document.getElementById('main-content');
             
-            // Dispara observador de animação
-            setTimeout(initScrollAnimation, 500);
+            // Adiciona classe para animar saída do envelope
+            envelope.classList.add('envelope-hidden');
+            
+            // Revela o conteúdo principal
+            setTimeout(() => {
+                mainContent.style.opacity = '1';
+                // Iniciar observador de scroll após abrir
+                initScrollObserver();
+            }, 500);
+            
+            // Permitir scroll no body novamente (caso estivesse bloqueado, embora CSS overflow trate a maioria)
+            document.body.style.overflowY = 'auto';
         }
 
-        // Lógica de Scroll Animation
-        function initScrollAnimation() {
+        // Intersection Observer para animações de scroll (Fade In Up)
+        function initScrollObserver() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
+                        entry.target.classList.add('active');
                     }
                 });
-            }, { threshold: 0.1 });
+            }, {
+                threshold: 0.15 // Dispara quando 15% do elemento estiver visível
+            });
 
-            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+            document.querySelectorAll('.reveal').forEach(el => {
                 observer.observe(el);
             });
         }
-
-        // Lógica do WhatsApp
-        function confirmPresence() {
-            const message = "Queridos noivos, Recebi o convite para o seu casamento e, com grande satisfação e alegria, confirmo a minha presença. Agradeço a consideração e a oportunidade de celebrar este momento sublime em suas vidas. Estarei presente para testemunhar essa união abençoada!";
-            
-            // Codifica a mensagem para URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Usa a API genérica do WhatsApp (whatsapp://send ou https://wa.me) sem número de telefone.
-            // Isso força o app a abrir a lista de contatos para "Encaminhar" ou selecionar o destinatário.
-            
-            // Tenta abrir o app diretamente primeiro
-            const appLink = `whatsapp://send?text=${encodedMessage}`;
-            const webLink = `https://wa.me/?text=${encodedMessage}`;
-            
-            // Lógica simples de tentativa
-            window.location.href = webLink;
-        }
-
-        // Bloqueia scroll inicial
-        document.body.style.overflowY = 'hidden';
     </script>
 </body>
 </html>
